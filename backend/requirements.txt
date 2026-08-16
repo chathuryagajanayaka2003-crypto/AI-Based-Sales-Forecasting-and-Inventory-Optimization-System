@@ -1,0 +1,11 @@
+@"
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pandas
+numpy
+scikit-learn
+xgboost
+joblib
+"@ | Set-Content backend\requirements.txt

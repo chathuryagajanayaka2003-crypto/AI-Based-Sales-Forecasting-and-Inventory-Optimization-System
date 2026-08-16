@@ -1,9 +1,20 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "postgresql://postgres:1225@localhost:5432/sales_forecasting"
 
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://postgres:1225@localhost:5432/sales_forecasting"
+)
+
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True
+)
+
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -11,13 +22,16 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
+
 Base = declarative_base()
 
 
 def get_db():
+
     db = SessionLocal()
 
     try:
         yield db
+
     finally:
         db.close()
